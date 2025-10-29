@@ -12,20 +12,28 @@
     "prisma:push": "prisma db push",
     "test": "jest --coverage"
   },
-  "keywords": ["currency", "api", "express", "prisma", "mysql", "typescript"],
+  "keywords": [
+    "currency",
+    "api",
+    "express",
+    "prisma",
+    "mysql",
+    "typescript"
+  ],
   "author": "Ojomona Ethan Inedu",
   "license": "ISC",
   "packageManager": "pnpm@10.19.0",
   "dependencies": {
     "@prisma/client": "^6.18.0",
     "axios": "^1.12.2",
-    "canvas": "^3.2.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "express-rate-limit": "^8.1.0",
     "helmet": "^8.1.0",
     "morgan": "^1.10.1",
+    "p-limit": "^7.2.0",
+    "pureimage": "^0.4.18",
     "zod": "^4.1.12"
   },
   "devDependencies": {

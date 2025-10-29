@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(helmet());
 
 
-app.use("/", countryRoutes);
+app.use("/country", countryRoutes);
 
 
 export default app;

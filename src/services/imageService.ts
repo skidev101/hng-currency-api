@@ -1,6 +1,6 @@
-import { createCanvas, registerFont } from 'canvas';
-import fs from 'fs';
-import path from 'path';
+import fs from "fs";
+import path from "path";
+import * as PImage from "pureimage";
 
 interface TopCountry {
   name: string;
@@ -13,13 +13,13 @@ interface SummaryData {
   lastRefreshed: string;
 }
 
-const IMAGE_PATH = path.join(process.cwd(), 'cache', 'summary.png');
+const IMAGE_PATH = path.join(process.cwd(), "cache", "summary.png");
 
 /**
  * Ensure cache directory exists
  */
 const ensureCacheDir = () => {
-  const cacheDir = path.join(process.cwd(), 'cache');
+  const cacheDir = path.join(process.cwd(), "cache");
   if (!fs.existsSync(cacheDir)) {
     fs.mkdirSync(cacheDir, { recursive: true });
   }
@@ -29,7 +29,7 @@ const ensureCacheDir = () => {
  * Format number with commas
  */
 const formatNumber = (num: number): string => {
-  return num.toLocaleString('en-US', {
+  return num.toLocaleString("en-US", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
@@ -38,84 +38,68 @@ const formatNumber = (num: number): string => {
 /**
  * Generate summary image
  */
-export const generateImageSummary = async (data: SummaryData): Promise<void> => {
+export const generateImageSummary = async (
+  data: SummaryData
+): Promise<void> => {
   try {
     ensureCacheDir();
-    
-    const width = 900;
-    const height = 650;
-    const canvas = createCanvas(width, height);
-    const ctx = canvas.getContext('2d');
 
-    // background gradient
-    const gradient = ctx.createLinearGradient(0, 0, 0, height);
-    gradient.addColorStop(0, '#1e3a8a');
-    gradient.addColorStop(1, '#312e81');
-    ctx.fillStyle = gradient;
+    // register custom font
+    const fontPath = path.join(__dirname, "../../fonts/Roboto-Medium.ttf");
+    let fontLoaded = false;
+    if (fs.existsSync(fontPath)) {
+      const robotoFont = PImage.registerFont(fontPath, "RobotoMedium");
+      await robotoFont.load();
+      fontLoaded = true;
+      console.log("font loaded at image service")
+    }
+
+    const width = 800;
+    const height = 1000;
+    const img = PImage.make(width, height);
+    const ctx = img.getContext("2d");
+
+    ctx.fillStyle = "#ffffff";
     ctx.fillRect(0, 0, width, height);
 
+    ctx.fillStyle = "#000000";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
     // title
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 42px Arial';
-    ctx.textAlign = 'center';
-    ctx.fillText('Country Data Summary', width / 2, 80);
+    ctx.font = fontLoaded ? "40px RobotoMedium" : "40px sans-serif";
+    ctx.fillText("Country Data Summary", width / 2, 100);
 
-    // total countries box
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
-    ctx.fillRect(50, 120, width - 100, 80);
-    
-    ctx.fillStyle = '#ffffff';
-    ctx.font = '24px Arial';
-    ctx.fillText(`Total Countries: ${data.totalCountries}`, width / 2, 165);
+    // total countries
+    ctx.font = fontLoaded ? "28px RobotoMedium" : "28px sans-serif";
+    ctx.fillText(`Total Countries: ${data.totalCountries}`, width / 2, 160);
 
-    // top 5 countries title
-    ctx.font = 'bold 32px Arial';
-    ctx.textAlign = 'left';
-    ctx.fillText('Top 5 Countries by GDP', 50, 260);
+    ctx.font = fontLoaded ? "30px RobotoMedium" : "30px sans-serif";
+    ctx.fillText("Top 5 Countries by Estimated GDP", width / 2, 240);
 
-    // top 5 countries list
-    ctx.font = '22px Arial';
-    let yPos = 310;
-    
+    // top countries list
+    ctx.textAlign = "left";
+    let yPos = 290;
+    const xName = 80;
+    const xGdp = 550;
+
+    ctx.font = fontLoaded ? "22px RobotoMedium" : "22px sans-serif";
+
     data.topCountries.forEach((country, index) => {
-      // rank circle
-      ctx.fillStyle = '#fbbf24';
-      ctx.beginPath();
-      ctx.arc(80, yPos, 18, 0, Math.PI * 2);
-      ctx.fill();
-      
-      ctx.fillStyle = '#1e3a8a';
-      ctx.font = 'bold 20px Arial';
-      ctx.textAlign = 'center';
-      ctx.fillText(`${index + 1}`, 80, yPos + 7);
-      
-      // country name and GDP
-      ctx.fillStyle = '#ffffff';
-      ctx.font = '22px Arial';
-      ctx.textAlign = 'left';
-      ctx.fillText(country.name, 120, yPos + 7);
-      
-      ctx.fillStyle = '#a5b4fc';
-      ctx.font = '20px Arial';
-      const gdpText = `$${formatNumber(country.estimated_gdp)}`;
-      ctx.fillText(gdpText, 120, yPos + 35);
-      
-      yPos += 70;
+      const gdp = `$${formatNumber(country.estimated_gdp)}`;
+      ctx.fillText(`${index + 1}. ${country.name}`, xName, yPos);
+      ctx.fillText(gdp, xGdp, yPos);
+      yPos += 40;
     });
 
-    // timestamp
-    ctx.fillStyle = '#94a3b8';
-    ctx.font = '18px Arial';
-    ctx.textAlign = 'center';
-    ctx.fillText(`Last updated: ${data.lastRefreshed}`, width / 2, height - 30);
+    ctx.textAlign = "center";
+    ctx.font = fontLoaded ? "18px RobotoMedium" : "18px sans-serif";
+    ctx.fillText(`Last updated: ${data.lastRefreshed}`, width / 2, height - 60);
 
-    // save image
-    const buffer = canvas.toBuffer('image/png');
-    fs.writeFileSync(IMAGE_PATH, buffer);
-    
-    console.log('summary image generated successfully');
+    await PImage.encodePNGToStream(img, fs.createWriteStream(IMAGE_PATH));
+    console.log("summary image generated successfully");
   } catch (error) {
-    console.error('cailed to generate summary image:', error);
+    console.error("failed to generate summary image:", error);
     throw error;
   }
 };
@@ -123,13 +107,9 @@ export const generateImageSummary = async (data: SummaryData): Promise<void> => 
 /**
  * Check if summary image exists
  */
-export const summaryImageExists = (): boolean => {
-  return fs.existsSync(IMAGE_PATH);
-};
+export const summaryImageExists = (): boolean => fs.existsSync(IMAGE_PATH);
 
 /**
  * Get summary image path
  */
-export const getSummaryImagePath = (): string => {
-  return IMAGE_PATH;
-};
+export const getSummaryImagePath = (): string => IMAGE_PATH;
