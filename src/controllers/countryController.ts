@@ -5,7 +5,7 @@ import {
   getSummaryImagePath,
 } from "../services/imageService";
 import { CountryResponse } from "../types";
-import { bigIntToNumber, decimalToNumber } from "../utils/helpers";
+import { bigIntToNumber } from "../utils/helpers";
 
 /**
  * POST /countries/refresh
@@ -37,7 +37,7 @@ export const getAllCountries = async (req: Request, res: Response) => {
       region: country.region,
       population: bigIntToNumber(country.population),
       currency_code: country.currency_code,
-      exchange_rate: country.exchange_rate,
+      exchange_rate: Number(country.exchange_rate?.toFixed(2)),
       estimated_gdp: country.estimated_gdp,
       flag_url: country.flag_url,
       last_refreshed_at: country.last_refreshed_at.toISOString(),

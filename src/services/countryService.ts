@@ -47,7 +47,7 @@ export const refreshCountries = async () => {
           await prisma.country.upsert({
             where: {
               name: countryData.name,
-              // mode: "insensitive"
+              
             },
             update: {
               capital: countryData.capital ?? null,
@@ -246,8 +246,10 @@ export const getStatus = async () => {
   const totalCountries = await prisma.country.count();
 
   const meta = await prisma.metadata.findUnique({
-    where: { key: "last_refreshed_at" },
+    where: { key: "updated_at" },
   });
+
+  console.log("status fetched:", meta);
 
   return {
     total_countries: totalCountries,

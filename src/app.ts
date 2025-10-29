@@ -2,7 +2,7 @@ import express, { Express } from "express";
 import cors from "cors";
 import morgan from "morgan";
 import helmet from "helmet";
-import countryRoutes from "./routes/countryRoutes";
+import routes from "./routes/index";
 
 
 const app: Express = express();
@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(helmet());
 
 
-app.use("/country", countryRoutes);
+app.use("/", routes);
 
 
 export default app;
