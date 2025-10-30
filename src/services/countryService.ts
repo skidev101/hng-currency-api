@@ -138,7 +138,7 @@ const generateSummaryImg = async () => {
 
     await generateImageSummary({
       totalCountries,
-      topCountries: topCountries.map((c) => ({
+      topCountries: topCountries.map((c: any) => ({
         name: c.name,
         estimated_gdp: c.estimated_gdp || 0,
       })),

@@ -30,7 +30,7 @@ export const getAllCountries = async (req: Request, res: Response) => {
     const countries = await countryService.getAllCountries(query);
 
     // Format response
-    const formattedCountries: CountryResponse[] = countries.map((country) => ({
+    const formattedCountries: CountryResponse[] = countries.map((country: any) => ({
       id: country.id,
       name: country.name,
       capital: country.capital,
