@@ -1,10 +1,11 @@
 {
   "name": "hng-currency-api",
+  "type": "module",
   "version": "1.0.0",
   "description": "RESTful API for currency conversion and exchange rates using Express and MySQL with Prisma ORM.",
   "main": "src/server.js",
   "scripts": {
-    "dev": "nodemon --watch src --ext ts --exec ts-node src/server.ts",
+    "dev": "tsx watch src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
     "prisma:generate": "prisma generate",
