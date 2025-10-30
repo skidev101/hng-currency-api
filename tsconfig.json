@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "outDir": "dist",
     "rootDir": "src",
     "esModuleInterop": true,
@@ -12,5 +12,13 @@
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  "tsc-alias": {
+    "resolveFullPaths": true,
+    "replacers": {
+      "resolve-extensions": {
+        "extentions": [".js"]
+      }
+    }
+  }
 }

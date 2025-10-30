@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import * as countryController from '../controllers/countryController.js';
-import { refreshLimiter } from '../middleware/rateLimiter.js';
+import * as countryController from '../controllers/countryController';
+import { refreshLimiter } from '../middleware/rateLimiter';
 
 const router: Router = Router();
 

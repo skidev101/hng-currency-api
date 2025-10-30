@@ -1,8 +1,8 @@
 import pLimit from "p-limit";
-import prisma from "../config/prisma.js";
-import { calculateEstimatedGdp } from "../utils/helpers.js";
-import { fetchCountries, fetchExchangeRates } from "./externalApiService.js";
-import { generateImageSummary } from "./imageService.js";
+import prisma from "../config/prisma";
+import { calculateEstimatedGdp } from "../utils/helpers";
+import { fetchCountries, fetchExchangeRates } from "./externalApiService";
+import { generateImageSummary } from "./imageService";
 import { AxiosError } from "axios";
 
 export const refreshCountries = async () => {

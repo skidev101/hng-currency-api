@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import * as countryService from "../services/countryService.js";
+import * as countryService from "../services/countryService";
 import {
   summaryImageExists,
   getSummaryImagePath,
 } from "../services/imageService.js";
-import { CountryResponse } from "../types/index.js";
-import { bigIntToNumber } from "../utils/helpers.js";
+import { CountryResponse } from "../types/index";
+import { bigIntToNumber } from "../utils/helpers";
 
 /**
  * POST /countries/refresh
