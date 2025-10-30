@@ -10,7 +10,8 @@
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev --name init",
     "prisma:push": "prisma db push",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "postinstall": "prisma generate"
   },
   "keywords": [
     "currency",

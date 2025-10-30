@@ -13,7 +13,7 @@ export const refreshCountries = async () => {
       fetchExchangeRates(),
     ]);
 
-    const limit = pLimit(10); // adjust concurrency as needed
+    const limit = pLimit(10); // limit concurrency to 10
     let processedCount = 0;
 
     const upserts = countries.map((countryData: any) =>
