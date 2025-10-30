@@ -40,7 +40,7 @@ Follow these steps to set up the project locally.
     The server will start on the port specified in your `.env` file (default is 3000).
 
 ### Environment Variables
-Create a `.env` file in the project root and add the following variables.
+Create a `.env` file in the project root directory and add the following variables.
 
 ```env
 # Database
