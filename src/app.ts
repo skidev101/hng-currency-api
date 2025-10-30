@@ -10,7 +10,7 @@ const app: Express = express();
 app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
-app.use(helmet());
+app.use((helmet as any)());
 
 app.use("/", routes);
 
