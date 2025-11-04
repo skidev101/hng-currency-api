@@ -3,7 +3,7 @@ import app from './app';
 import prisma from './config/prisma';
 
 
-const PORT = parseInt(process.env.PORT);
+const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3000;
 
 async function main() {
   app.listen(PORT, () => {
